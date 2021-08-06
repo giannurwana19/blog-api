@@ -34,7 +34,7 @@ app.use((err, req, res, next) => {
 });
 
 mongoose
-  .connect('mongodb+srv://gian:passwordmongo@cluster0.ry4cf.mongodb.net/test', {
+  .connect('mongodb+srv://gian:passwordmongo@cluster0.ry4cf.mongodb.net/blog', { // blog adalah nama db
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
