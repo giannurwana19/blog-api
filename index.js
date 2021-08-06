@@ -24,6 +24,14 @@ app.use((req, res, next) => {
 app.use('/v1/auth', authRoutes);
 app.use('/v1/blog', blogRoutes);
 
+app.use((err, req, res, next) => {
+  const status = err.errorStatus || 500;
+  const message = err.message;
+  const data = err.data;
+
+  res.status(status).json({ message, data });
+});
+
 app.listen(port);
 
 // h: DOCS
