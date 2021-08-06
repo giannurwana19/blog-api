@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
 const port = 4000;
@@ -32,7 +33,16 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message, data });
 });
 
-app.listen(port);
+mongoose
+  .connect('mongodb+srv://gian:passwordmongo@cluster0.ry4cf.mongodb.net/test', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
+  .then(() => {
+    app.listen(port, () => console.log('Connection Success'));
+  })
+  .catch(err => console.log(err));
 
 // h: DOCS
 // * artinya mengizinkan semua akses origin untuk masuk ke aplikasi
