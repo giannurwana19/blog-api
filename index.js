@@ -5,6 +5,7 @@ const app = express();
 const port = 4000;
 
 const productRoutes = require('./src/routes/products');
+const authRoutes = require('./src/routes/auth');
 
 app.use(bodyParser.json()); // type JSON
 
@@ -19,8 +20,10 @@ app.use((req, res, next) => {
   next();
 });
 
+// Route Group
 // app.use(productRoutes);
 app.use('/v1/customer', productRoutes);
+app.use('/v1/auth', authRoutes);
 
 app.listen(port);
 
