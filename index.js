@@ -1,9 +1,12 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 
 const app = express();
 const port = 4000;
 
 const productRoutes = require('./src/routes/products');
+
+app.use(bodyParser.json()); // type JSON
 
 // mencegah cors origin
 app.use((req, res, next) => {
