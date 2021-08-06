@@ -47,6 +47,35 @@ err-response:
 GROUP: BLOG
 
 [1] - Create Blog Post
+[POST] : {root.api}/{version}/blog/Post
+
+req:
+{
+  "title": "Title Blog",
+  "image": "image.jpg",
+  "body": "lorem ipsum is dolor"
+}
+
+res:
+{
+  "message": "Create Blog Post Success",
+  "data": {
+    "post_id": 1,
+      "title": "Title Blog",
+      "image": "image.jpg",
+      "body": "lorem ipsum is dolor",
+      "created_at": "6/08/2021",
+      "author": {
+        "uid": 1,
+        "name: "testing"
+      } 
+  }
+}
+
+err-response:
+201 -> Blog Post Berhasil dibuat
+400 -> Input yang ada masukan tidak valid
+
 [2] - Get Blog Post
 [3] - Update Blog Post
 [4] - Delete Blog Post
