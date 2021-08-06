@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const multer = require('multer');
 
 const app = express();
 const port = 4000;
@@ -8,7 +9,29 @@ const port = 4000;
 const authRoutes = require('./src/routes/auth');
 const blogRoutes = require('./src/routes/blog');
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().getTime() + '-' + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
 app.use(bodyParser.json()); // type JSON
+app.use(multer({ storage: fileStorage, fileFilter }).single('image'));
 
 // mencegah cors origin
 app.use((req, res, next) => {
@@ -34,7 +57,7 @@ app.use((err, req, res, next) => {
 });
 
 mongoose
-  .connect('mongodb+srv://gian:passwordmongo@cluster0.ry4cf.mongodb.net/blog', { // blog adalah nama db
+  .connect('mongodb+srv://gian:passwordmongo@cluster0.ry4cf.mongodb.net/blog', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -46,3 +69,6 @@ mongoose
 
 // h: DOCS
 // * artinya mengizinkan semua akses origin untuk masuk ke aplikasi
+// mongodb+srv://gian:passwordmongo@cluster0.ry4cf.mongodb.net/blog
+// blog adalah nama database
+// multer adalah middleware untuk menghandle multipart/form-data
