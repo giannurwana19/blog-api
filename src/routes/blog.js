@@ -11,5 +11,7 @@ const validate = [
 ];
 
 router.post('/post', validate, blogController.createBlogPost);
+router.get('/posts', blogController.getAllBlogPost);
+router.get('/post/:postId', blogController.getBlogPostById);
 
 module.exports = router;
