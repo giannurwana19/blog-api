@@ -1,5 +1,7 @@
 const { validationResult } = require('express-validator');
 const BlogPost = require('../models/blog');
+const path = require('path');
+const fs = require('fs');
 
 exports.createBlogPost = (req, res, next) => {
   const errors = validationResult(req);
@@ -123,3 +125,43 @@ exports.updateBlogPost = (req, res, next) => {
       next(err);
     });
 };
+
+exports.deleteBlogPost = (req, res, next) => {
+  const postId = req.params.postId;
+
+  BlogPost.findById(postId)
+    .then(post => {
+      if (!post) {
+        const error = new Error('Blog Post tidak ditemukan');
+        error.errorStatus = 404;
+
+        throw error;
+      }
+
+      removeImage(post.image);
+      return BlogPost.findByIdAndRemove(postId);
+    })
+    .then(result => {
+      res.status(200).json({
+        message: 'Hapus Post berhasil',
+        data: result,
+      });
+    })
+    .catch(err => {
+      next(err);
+    });
+};
+
+const removeImage = filePath => {
+  console.log('filePath', filePath);
+  console.log('dirname', __dirname);
+
+  filePath = path.join(__dirname, '../..', filePath);
+
+  fs.unlink(filePath, err => console.log(err));
+};
+
+// DOCS
+
+// Promise bisa nested
+// untuk nested, kita bisa then di luar promise itu atau then di dalam promisenya sendiri
