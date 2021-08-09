@@ -17,3 +17,7 @@ router.put('/post/:postId', validate, blogController.updateBlogPost);
 router.delete('/post/:postId', blogController.deleteBlogPost);
 
 module.exports = router;
+
+// DOCS
+// kita akan buat query params seperti ini
+// router.get('/posts?page=1&perPage=5', blogController.getAllBlogPost);

@@ -45,15 +45,29 @@ exports.createBlogPost = (req, res, next) => {
 };
 
 exports.getAllBlogPost = (req, res, next) => {
+  const currentPage = parseInt(req.query.page) || 1;
+  const perPage = parseInt(req.query.perPage) || 5;
+  let totalItems;
+
   BlogPost.find()
+    .countDocuments()
+    .then(count => {
+      totalItems = count;
+      return BlogPost.find()
+        .skip((currentPage - 1) * perPage)
+        .limit(perPage);
+    })
     .then(result => {
       res.status(200).json({
         message: 'Data BlogPost berhasil dipanggil',
         data: result,
+        total_data: totalItems,
+        per_page: perPage,
+        current_page: currentPage,
       });
     })
     .catch(err => {
-      next(err); // kirim error ke depan
+      next(err);
     });
 };
 
@@ -165,3 +179,20 @@ const removeImage = filePath => {
 
 // Promise bisa nested
 // untuk nested, kita bisa then di luar promise itu atau then di dalam promisenya sendiri
+
+// pagination
+// skip untuk melewati data
+// parameter dari skip adalah hasil pethitungan dari banyak data yang akan di lewati
+// terus kita limit data nya (batasi)
+
+// tanpa pagination
+// BlogPost.find()
+//   .then(result => {
+//     res.status(200).json({
+//       message: 'Data BlogPost berhasil dipanggil',
+//       data: result,
+//     });
+//   })
+//   .catch(err => {
+//     next(err); // kirim error ke depan
+//   });
