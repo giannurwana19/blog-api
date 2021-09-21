@@ -49,6 +49,9 @@ app.use((req, res, next) => {
 // Route Group
 app.use('/v1/auth', authRoutes);
 app.use('/v1/blog', blogRoutes);
+app.get('/', (req, res) => {
+  res.json({ message: 'Success' });
+});
 
 app.use((err, req, res, next) => {
   const status = err.errorStatus || 500;
