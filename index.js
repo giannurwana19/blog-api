@@ -5,7 +5,6 @@ const multer = require('multer');
 const path = require('path');
 
 const app = express();
-const port = 4000;
 
 const authRoutes = require('./src/routes/auth');
 const blogRoutes = require('./src/routes/blog');
@@ -68,7 +67,7 @@ mongoose
     useCreateIndex: true,
   })
   .then(() => {
-    app.listen(port, () => console.log('Connection Success'));
+    app.listen(process.env.PORT, () => console.log('Connection Success'));
   })
   .catch(err => console.log(err));
 
